@@ -1,0 +1,49 @@
+$background-color: #dcddde;
+$button-background-color: #f5f6f7;
+$hover-background-color: #e9eaea;
+
+.welcome{
+    width: 100%;
+    height: 100%;
+    background-color: $background-color;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.home{
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 15px;
+    height: 100%;
+    width: 100%;
+    padding: 50px;
+}
+
+.contentsGrid{
+    height: 100%;
+    padding: 270px 20px;
+}
+
+.contentsFlex{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+}
+
+.h1content{
+    font-size: 60px;
+    font-weight: 800;
+}
+
+.dashboardBtn{
+    width: 300px;
+    font-size: 30px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    padding: 5px 20px;
+    border-radius: 10px;
+    background-color: $button-background-color;
+    transition: background-color .15s ease-in;
+    &:hover{
+        background-color: $hover-background-color;
+    }
+}
