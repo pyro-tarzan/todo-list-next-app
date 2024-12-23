@@ -1,0 +1,144 @@
+$background-color: #f5f6f7;
+$window-background-color: #e9eaea;
+$cards-background-color: #f6f7f8;
+
+.cardPanel{
+    padding: 5px 1px 1px 1px;
+    border-radius: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.panelCont{
+    display: flex;
+    height: 35px;
+    justify-content: center;
+}
+
+.panel{
+    display: flex;
+    justify-content: center;
+    width: 10%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: $cards-background-color;
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.175);
+}
+
+.workspace{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.02);
+    height: 100%;
+    background-color: $cards-background-color;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.inputFile{
+    all: unset;
+    font-family: 'Courier New', Courier, monospace;
+    width: 75%;
+    height: 100%;
+    padding-top: 1px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.addButton{
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    font-size: 22px;
+    padding: 0px 10px;
+    margin-left: 5px ;
+    background-color: $cards-background-color;
+    color: grey;
+    box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.02);
+}
+
+.todoCard{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    gap: 5px;
+    width: 200px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.cardItems{
+    padding: 0px 10px;
+    font-size: 16px;
+}
+
+.cardBtns{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    justify-content: flex-end;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.cardBtn{
+    font-size: 12px;
+    padding: 2px 5px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: $background-color .2s ease-in-out;
+    &:hover{
+        background-color: rgb(229, 229, 229);
+    }
+}
+
+.cardName{
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.cardDate{
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.inputAdd{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.taskInput{
+    all: unset();
+    font-size: 14px;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    margin-bottom: 5px;
+}
+
+.taskAdd{
+    font-size: 18px;
+    padding: 0px 5px;
+    height: 80%;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.4);
+    background-color: white;
+}
+
+.inputLi{
+    font-size: 12px;
+}
