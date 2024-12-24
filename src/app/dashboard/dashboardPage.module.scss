@@ -141,4 +141,21 @@ $cards-background-color: #f6f7f8;
 
 .inputLi{
     font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 3px 0px;
+}
+
+.taskDelete{
+    font-size: 11px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 0px 5px;
+    border-radius: 5px;
+    background-color: white;
+    transition: background-color .2s ease-in-out;
+    &:hover{
+        background-color: rgb(243, 243, 243);
+    }
 }

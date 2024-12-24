@@ -5,7 +5,7 @@ import styles from "@/app/dashboard/dashboardPage.module.scss";
 interface Todo {
     id: number;
     title: string;
-    content: [];
+    content: {text: string, isStrike: boolean}[];
     date: DateNow;
     important: boolean;
 }
@@ -19,7 +19,7 @@ interface DateNow {
 export default function dashboardPage(){
     const [cardTitle, setCardTitle] = useState("");
     const [todos, setTodos] = useState<Todo[]>([]);
-    const [taskValue, setTaskValue] = useState("");
+    const [taskValue, setTaskValue] = useState<{ [ key: number]: string }>({});
 
     useEffect(() => {
         const fetchTodos = async() => {
@@ -31,7 +31,7 @@ export default function dashboardPage(){
 
                 if (res.status === 200){
                     const result: Todo[] = await res.json();
-                    setTodos(result);
+                    setTodos(result || []);
                 }
                 
             }
@@ -44,16 +44,48 @@ export default function dashboardPage(){
     }, [])
     
 
-    const handleTaskValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTaskValue(e.target.value);
+    const handleTaskValue = (todoId: number, value: string) => {
+        setTaskValue((prev) => (
+            {...prev, [todoId]: value}
+        ));
     }
 
     const handleCardTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCardTitle(e.target.value);
     };
 
-    const handleAddATask = () => {
-        console.log(taskValue);
+    const handleAddATask = (todoId: number) => {
+        const value = taskValue[todoId];
+        if ( !value.trim() ) {
+            alert("Task cannot be empty.")
+            return ;
+        } 
+
+        setTodos((prevTodos) => (
+            prevTodos.map((todo) => (
+                todo.id == todoId
+                ? {...todo, content: [...todo.content, {text: value, isStrike: false}]}
+                : todo
+            ))
+        ));
+
+        setTaskValue((prev) => (
+            {...prev, [todoId]: ""}
+        ));
+    }
+
+    const handleClickLi = (todoId: number, index: number) => {
+        setTodos((prevTodos) => (
+            prevTodos.map((todo) => (
+                todo.id === todoId
+                ? {
+                    ...todo,
+                    content: todo.content.map((task, i) => (
+                        i === index ? {...task, isStrike: !task.isStrike} : task
+                    ))
+                } : todo
+            ))
+        ));
     }
 
     const handleNewTaskClick = async() => {
@@ -92,60 +124,73 @@ export default function dashboardPage(){
 
     return (
         <div className={styles.cardPanel}>
-                        <div className={styles.panelCont}>
-                            <div className={styles.panel}>
-                                <input 
-                                    type="text" 
-                                    className={styles.inputFile}
-                                    value={cardTitle}
-                                    onChange={handleCardTitleChange} 
-                                    placeholder="Title"
-                                />
-                            </div>
-                            <button 
-                                onClick={handleNewTaskClick}
-                                className={styles.addButton}
-                            >
-                                +
-                            </button>
+            <div className={styles.panelCont}>
+                <div className={styles.panel}>
+                    <input 
+                        type="text" 
+                        className={styles.inputFile}
+                        value={cardTitle}
+                        onChange={handleCardTitleChange} 
+                        placeholder="Title"
+                    />
+                </div>
+                <button 
+                    onClick={handleNewTaskClick}
+                    className={styles.addButton}
+                >
+                    +
+                </button>
 
+            </div>
+            <div className={styles.workspace}>
+                {todos.map((todo) => (
+                    <div key={todo.id} className={styles.todoCard}>
+                        <div className={styles.h2P}>
+                            <h2 className={`${styles.cardItems} ${styles.cardName}`}>{todo.title}</h2>
+                            <p className={`${styles.cardItems} ${styles.cardDate}`}>
+                                {`${todo.date.date}/${todo.date.month}/${todo.date.year}`}
+                            </p>
                         </div>
-                        <div className={styles.workspace}>
-                            {todos.map((todo) => (
-                                <div key={todo.id} className={styles.todoCard}>
-                                    <div className={styles.h2P}>
-                                        <h2 className={`${styles.cardItems} ${styles.cardName}`}>{todo.title}</h2>
-                                        <p className={`${styles.cardItems} ${styles.cardDate}`}>
-                                            {`${todo.date.date}/${todo.date.month}/${todo.date.year}`}
+                        
+                        <ul className={styles.cardItems}>
+                            <div className={styles.inputAdd}>
+                                <input
+                                    type="text"
+                                    className={styles.taskInput}
+                                    value={taskValue[todo.id] || ""}
+                                    onChange={(e) => handleTaskValue(todo.id, e.target.value)}
+                                    placeholder="task"
+                                />
+                                <button onClick={() => handleAddATask(todo.id)} className={styles.taskAdd}>+</button>
+                            </div>
+                            <div key={todo.id}>
+                                {todo.content.map((item, index) => (
+                                    <li 
+                                        key={index} 
+                                        className={styles.inputLi}
+                                    >
+                                        <p
+                                            onClick={() => handleClickLi(todo.id, index)}
+                                            style={{
+                                                textDecoration: item.isStrike ? "line-through" : "none",
+                                                cursor: "pointer"
+                                            }}
+                                        >
+                                            {item.text}
                                         </p>
-                                    </div>
-                                    
-                                    <ul className={styles.cardItems}>
-                                    <div className={styles.inputAdd}>
-                                        <input
-                                            type="text"
-                                            className={styles.taskInput}
-                                            value={`${taskValue}`}
-                                            onChange={handleTaskValue}
-                                            placeholder="task"
-                                        />
-                                        <button onClick={handleAddATask} className={styles.taskAdd}>+</button>
-                                    </div>
-                                        <div key={todo.id} className={styles.inputLi}>
-                                            {todo.content.map((item, index) => (
-                                                <li key={index}>{item}</li>
-                                            ))}
-                                        </div>
-                                            
-                                    </ul>
-                                    <div className={`${styles.cardBtns} ${styles.cardItems}`}>
-                                        <button className={styles.cardBtn}>Save</button>
-                                        <button className={styles.cardBtn}>Cancel</button>
-                                    </div>
-                                </div>
-                            ))}
+                                        <button className={styles.taskDelete}>x</button>
+                                    </li>
+                                ))}
+                            </div>     
+                        </ul>
+                        <div className={`${styles.cardBtns} ${styles.cardItems}`}>
+                            <button className={styles.cardBtn}>Save</button>
+                            <button className={styles.cardBtn}>Cancel</button>
                         </div>
                     </div>
+                ))}
+            </div>
+        </div>
             
     )
 }

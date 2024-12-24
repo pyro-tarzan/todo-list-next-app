@@ -1,29 +1,18 @@
 import { NextResponse } from "next/server";
-
-export const todos = [
-    {
-        id: 1,
-        title: "Learn Next.ts",
-        content: ["Understand basics", "Learn API routes", "Build a project"],
-        date: { date: 23, month: 12, year: 2024 },
-        important: false
-    },
-    {
-        id: 2,
-        title: "Groceries",
-        content: ["Potato", "Tomato", "Onion", "Cucumber"],
-        date: { date: 23, month: 12, year: 2024 },
-        important: false
-    },
-    {
-        id: 3,
-        title: "Create TodoList",
-        content: ["Set up home page", "Create a app routing", "Use common Navigation bar and interactive"],
-        date: { date: 23, month: 12, year: 2024 },
-        important: false
-    }
-];
+import { query } from "@/app/lib/db";
 
 export async function GET(){
-    return NextResponse.json(todos);
+    try{
+        const tasks = await query(
+            "SELECT t.id, t.title, t.date, t.important, \
+            json_agg(json_build_object('text', c.text, 'is_strike', c.is_strike)) AS content \
+            FROM tasks t \
+            LEFT JOIN contents c ON t.id = c.task_id \
+            GROUP BY t.id;"
+        );
+        return NextResponse.json(tasks);
+    }
+    catch( error ){
+        return NextResponse.json({error: "Internal server error."});
+    }
 }

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { todos } from "../all/route";
 
 export async function POST(req: NextRequest){
     try{
